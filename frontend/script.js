@@ -8,7 +8,7 @@ elem.addEventListener('click', async (e) => {
 
     let name = "Oscar";
     let password = "dasha12345";
-    let user_type = "admin";
+    let user_type = "user";
 
     await fetch('/users/add', {
         method: 'POST', // GET, PUT, DELETE
