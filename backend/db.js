@@ -9,26 +9,38 @@ const addPerson = (name, password, type_user) => {
     });
 };
 
+const getProjects = () => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM projects',  function (err, rows) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(rows);
+            }
+        });
+    });
+};
+
 const getPerson = (name, password) => {
     return new Promise((resolve, reject) => {
-        db.all('SELECT * FROM users WHERE name = ? AND password = ?)', [name, password], (err, rows) => {
-            if (err) {
-              throw err;
+        db.all('SELECT * FROM users WHERE name = ? AND password = ?', [name, password], (err, rows) => {
+            if(err) {
+                reject(err);
             }
-
-            let i = 0;
-            while(rows[i] != null) {
-                console.log(rows[i].name);
-                i++;
+            else{
+                if(rows.length > 0) {
+                    resolve(rows[0]);
+                }
+                else {
+                    resolve(null);
+                    // reject(err);
+                }
             }
-
-            // rows.forEach((row) => {
-            //   console.log(row.name);
-            // });
           });
     });
 };
 
 module.exports = {
-    addPerson
+    addPerson, getPerson, getProjects
 };
