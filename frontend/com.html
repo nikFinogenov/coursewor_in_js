@@ -1,0 +1,125 @@
+<!-- <?php
+    $db = new PDO("mysql:host=localhost;dbname=control_projects", "root", "");
+    $team = [];
+    if ($query = $db->query("SELECT * FROM team")) {
+        $team = $query->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        print_r($db->errorInfo());
+    }
+
+    $employee = [];
+    if ($query = $db->query("SELECT * FROM employee")) {
+        $employee = $query->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        print_r($db->errorInfo());
+    }
+?> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Документ</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="top_menu">
+            <ul>
+                <li><a href="main.html">Проєкти</a></li>
+                <li><a href="time.html">Таблиця часу</a></li>
+                <li><a href="com.html">Команди</a></li>
+                <li><a href="emp.html">Працівники</a></li>
+                <li><a href="customer.html">Клієнти</a></li>
+                <li><a href="log.html">Вихід</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="wrapper">
+        <div class="search-container">
+            <form method="GET" action="search.php">
+                <input type="search" name="search-input" placeholder="Пошук" />
+                <button type="submit">🔍︎</button>
+            </form>
+            <button>↑↓</button>
+        </div>
+    </div>
+    <form method="get">
+        <div class="addItem-container">
+            <input type="text" name="name" placeholder="Назва" />
+            <input type="datetime-local" name="start_date" placeholder="Дата створення" />
+            <input type="text" name="name" placeholder="Проєкт" />
+            <button type="submit" name="submit">Додати</button>
+        </div>
+    </form>
+    <div id="com-list">
+    </div>
+    <!-- <?php foreach($team as $team_data): ?>
+        <div class="team">
+            <p><span><?= htmlspecialchars($team_data['name']) ?></span></p>
+            <div class="team-container">
+                <p><span>Дата створення команди:</span> <?= htmlspecialchars($team_data['start_data']) ?></p>
+                <p><span>Проєкт, над яким працює команда:</span> <?= htmlspecialchars($team_data['project_id']) ?></p>
+                <div class="employees">
+                    <?php foreach($employee as $employee_data): ?>
+                        <?php if($employee_data['team_id'] == $team_data['team_id']): ?>
+                            <div class="employees-container" onclick="redirectToSearch('<?= htmlspecialchars($employee_data['first_name']) ?>', '<?= htmlspecialchars($employee_data['last_name']) ?>')">
+                                <img width=100px src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM-CPt8gi8dApiyMnk7Si03ILg5FE9j0dPA&s" alt="">
+                                <p><span><?= htmlspecialchars($employee_data['first_name']. ' ' . $employee_data['last_name']) ?></span></p>
+                                <p><?= htmlspecialchars($employee_data['position']) ?></p>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div> 
+        </div>
+    <?php endforeach; ?> -->
+    <script>
+        // function redirectToSearch(firstName, lastName) {
+        //     const searchQuery = encodeURIComponent(firstName + ' ' + lastName);
+        //     window.location.href = `http://localhost/coursework/search.php?search-input=${searchQuery}`;
+        // }
+        async function recieveCom() {
+            let result = await fetch("/com/get");
+            if (result.status != 200) {
+                throw new Error("Pizdec");
+            }
+            let coms = await result.json();
+            console.log(coms);
+            if (coms.length > 0) {
+                coms.forEach(com => {
+                    let div = document.createElement('div');
+                    div.className = 'team';
+                    div.innerHTML = `
+                        <p><span>${com.NAME}</span></p>
+                        <div class="team-container">
+                        <p><span>Дата створення команди:</span>${com.DATSTART}</p>
+                        <p><span>Проєкт, над яким працює команда:</span>${com.NAMEPROJECT}</p>
+                        <div class="employees">
+
+                        <div class="employees-container">
+                        <img width=100px src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM-CPt8gi8dApiyMnk7Si03ILg5FE9j0dPA&s" alt="">
+                        <p><span></span></p>
+                        <p></p>
+                        </div>
+
+                        </div>
+                        </div> 
+                    `
+                    let comList = document.getElementById('com-list');
+                    comList.appendChild(div);
+                });
+            }
+            else {
+                console.log("No com");
+            }
+        }
+
+        recieveCom();
+    </script>
+</body>
+
+</html>

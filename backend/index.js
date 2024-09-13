@@ -52,7 +52,7 @@ app.post('/users/get', async (req, res) => {
 app.get('/project/get', async (req, res) => {
     try{
         let projects = await db.getProjects();
-        if(projects.legth == 0) {
+        if(projects.length == 0) {
             res.status(400);
         }
         else {
@@ -66,4 +66,19 @@ app.get('/project/get', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`)
+})
+
+app.get('/com/get', async (req, res) => {
+    try{
+        let coms = await db.getCom();
+        if(coms.length == 0) {
+            res.status(400);
+        }
+        else {
+            res.status(200).json(coms);
+        }
+    }
+    catch(error) {
+        res.status(500).json({ error: 'Failed to add task' });
+    }
 })

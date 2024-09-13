@@ -22,6 +22,19 @@ const getProjects = () => {
     });
 };
 
+const getCom = () => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM COM',  function (err, rows) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(rows);
+            }
+        });
+    });
+};
+
 const getPerson = (name, password) => {
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM users WHERE name = ? AND password = ?', [name, password], (err, rows) => {
@@ -42,5 +55,5 @@ const getPerson = (name, password) => {
 };
 
 module.exports = {
-    addPerson, getPerson, getProjects
+    addPerson, getPerson, getProjects, getCom
 };
