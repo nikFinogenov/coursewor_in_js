@@ -40,6 +40,8 @@ if ($query = $db->query("SELECT * FROM full_information_about_employees")) {
             <button onclick="window.location.href='employeeAdd.php'">+</button>    
         </div>
     </div>
+    <div id ="emp-list">
+    </div>
     <!-- <?php foreach($info as $row): ?>
         <div class="resume">
             <div class="resume-img">
@@ -58,5 +60,50 @@ if ($query = $db->query("SELECT * FROM full_information_about_employees")) {
             </div>
         </div>
     <?php endforeach; ?>            -->
+
+<script>
+
+        async function recieveEmp() {
+            let result = await fetch("/emp/get");
+            if (result.status != 200) {
+                throw new Error("Pizdec");
+            }
+            let emps = await result.json();
+            console.log(emps);
+            if (emps.length > 0) {
+                emps.forEach(emp => {
+                    let div = document.createElement('div');
+                    div.className = 'resume';
+                    div.innerHTML = `
+                    <div class="resume-container">
+                        <p><span>Імя:</span>${emp.F_NAME}</p> 
+                        <p><span>Фамілія:</span>${emp.L_NAME}</p>
+                        <p><span>Номер телефону:</span>${emp.PH_NUMBER}</p>
+                        <p><span>Хард скіли:</span>${emp.HARD_SK}</p>
+                        <p><span>Софт скіли:</span>${emp.SOFT_SK}</p>
+                        
+                        <div class="resume-img">
+                        <img width=100px src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM-CPt8gi8dApiyMnk7Si03ILg5FE9j0dPA&s" alt="">
+                        </div>
+                        <p><span></span></p>
+                        <p></p>
+                        </div>
+
+                        </div>
+                        </div> 
+                    `
+                    let empList = document.getElementById('emp-list');
+                    empList.appendChild(div);
+                });
+            }
+            else {
+                console.log("No emp");
+            }
+        }
+
+        recieveEmp();
+
+</script>
+
 </body>
 </html>

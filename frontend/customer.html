@@ -41,6 +41,8 @@ if ($query = $db->query("SELECT * FROM customer")) {
             <button onclick="window.location.href='customerAdd.php'">+</button>    
         </div>
     </div>
+    <div id ="customer-list">
+    </div>
     <!-- <?php foreach($customers as $row): ?>
         <div class="resume">
             <div class="resume-img">
@@ -54,6 +56,46 @@ if ($query = $db->query("SELECT * FROM customer")) {
             </div>
         </div>
     <?php endforeach; ?> -->
+
+<script>
+    async function recieveCustomer() {
+            let result = await fetch("/customer/get");
+            if (result.status != 200) {
+                throw new Error("Pizdec");
+            }
+            let customers = await result.json();
+            console.log(customers);
+            if (customers.length > 0) {
+                customers.forEach(customer => {
+                    let div = document.createElement('div');
+                    div.className = 'customer';
+                    div.innerHTML = `
+                    <div class="customer-container">
+                        <p><span>Імя:</span>${customer.F_NAME}</p>
+                        <p><span>Номер замовника:</span>${customer.PH_NUMBER}</p>
+                        
+                        <div class="resume-img">
+                         <img width=100px src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM-CPt8gi8dApiyMnk7Si03ILg5FE9j0dPA&s" alt="">
+                        </div>
+                        <p><span></span></p>
+                        <p></p>
+                        </div>
+
+                        </div>
+                        </div> 
+                    `
+                    let customerList = document.getElementById('customer-list');
+                    customerList.appendChild(div);
+                });
+            }
+            else {
+                console.log("No customer");
+            }
+        }
+
+        recieveCustomer();
+</script>
+
 </body>
 
 </html>

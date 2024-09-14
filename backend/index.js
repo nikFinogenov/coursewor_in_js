@@ -82,3 +82,33 @@ app.get('/com/get', async (req, res) => {
         res.status(500).json({ error: 'Failed to add task' });
     }
 })
+
+app.get('/emp/get', async (req, res) => {
+    try{
+        let emps = await db.getEmp();
+        if(emps.length == 0) {
+            res.status(400);
+        }
+        else {
+            res.status(200).json(emps);
+        }
+    }
+    catch(error) {
+        res.status(500).json({ error: 'Failed to add task' });
+    }
+})
+
+app.get('/customer/get', async (req, res) => {
+    try{
+        let customers = await db.getCustomer();
+        if(customers.length == 0) {
+            res.status(400);
+        }
+        else {
+            res.status(200).json(customers);
+        }
+    }
+    catch(error) {
+        res.status(500).json({ error: 'Failed to add task' });
+    }
+})
