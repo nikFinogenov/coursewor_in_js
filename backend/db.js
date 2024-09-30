@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./itprojects.db');
+const db = new sqlite3.Database('../itprojects.db');
 
 const addPerson = (name, password, type_user) => {
     return new Promise((resolve, reject) => {
@@ -65,6 +65,7 @@ const getPerson = (name, password) => {
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM users WHERE name = ? AND password = ?', [name, password], (err, rows) => {
             if(err) {
+                console.log(err);
                 reject(err);
             }
             else{

@@ -35,6 +35,7 @@ app.post('/users/add', async (req, res) => {
 app.post('/users/get', async (req, res) => {
     try {
         const { name, pass } = req.body;
+        console.log(name, pass);
         
         const user = await db.getPerson(name, pass);
         if(user == null) {
