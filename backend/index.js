@@ -26,7 +26,7 @@ app.post('/users/add', async (req, res) => {
         const { name, password, user_type } = req.body;
 
         const newTask = await db.addPerson( name, password, user_type);
-        res.status(201).json(newTask);
+        res.status(200).json(newTask);
     } catch (error) {
         res.status(500).json({ error: 'Failed to add task' });
     }
